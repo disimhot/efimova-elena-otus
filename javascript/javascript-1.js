@@ -7,38 +7,41 @@ sum(1)(2)(3)....(n)() === 1 + 2 + 3 + ... + n
 */
 
 function sum(value){
-    if (parseInt(value)|| value === 0){
-        var array = [];
-        array.push(value);
-        return f;
-    } else {
-        console.log('Insert a number');
-        return;
-    }
 
-    function f(nextValue){
-
-        if(parseInt(nextValue) || nextValue === 0) {
-
-            array.push(nextValue);
+    try {
+        if (parseInt(value) || value === 0) {
+            var array = [];
+            array.push(value);
             return f;
-
-        } else if(nextValue == undefined) {
-
-            var reducer = (accumulator, nextValue) => accumulator + nextValue;
-            var res = array.reduce(reducer);
-
-            console.log(res);
-            return f;
-
         } else {
             console.log('Insert a number');
             return;
         }
+
+        function f(nextValue) {
+
+            if (parseInt(nextValue) || nextValue === 0) {
+
+                array.push(nextValue);
+                return f;
+
+            } else if (nextValue == undefined) {
+
+                var reducer = (accumulator, nextValue) => accumulator + nextValue;
+                var res = array.reduce(reducer);
+
+                console.log(res);
+                return f;
+
+            } else {
+                throw e;
+            }
+        }
+    } catch(e){
+        console.log('Insert a number');
     }
-    return;
 
 }
 
-sum(1)(0)(2)(3)();
-sum(0)(2)(3)();
+sum('qert')(0)(2)(3)();
+//sum(0)(2)(3)();
