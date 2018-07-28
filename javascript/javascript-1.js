@@ -2,7 +2,6 @@
 Написать функцию суммирования значений
 Написать функцию sum, которая может быть исполнена любое количество раз с не `undefined` аргументом.
 Если она исполнена без аргументов, то возвращает значение суммы всех переданных до этого значений.
-
 sum(1)(2)(3)....(n)() === 1 + 2 + 3 + ... + n
 */
 
@@ -14,8 +13,7 @@ function sum(value){
             array.push(value);
             return f;
         } else {
-            console.log('Insert a number');
-            return;
+            throw new Error();
         }
 
         function f(nextValue) {
@@ -34,7 +32,7 @@ function sum(value){
                 return f;
 
             } else {
-                throw e;
+                throw new Error();
             }
         }
     } catch(e){
