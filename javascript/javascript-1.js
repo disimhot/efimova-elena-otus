@@ -7,35 +7,38 @@ sum(1)(2)(3)....(n)() === 1 + 2 + 3 + ... + n
 */
 
 function sum(value){
-    if (parseInt(value)){
+    if (parseInt(value)|| value === 0){
         var array = [];
         array.push(value);
         return f;
     } else {
         console.log('Insert a number');
-        return sum;
+        return;
     }
 
     function f(nextValue){
 
-        if(parseInt(nextValue)) {
+        if(parseInt(nextValue) || nextValue === 0) {
+
             array.push(nextValue);
-            return f
+            return f;
+
         } else if(nextValue == undefined) {
+
             var reducer = (accumulator, nextValue) => accumulator + nextValue;
             var res = array.reduce(reducer);
 
             console.log(res);
             return f;
+
         } else {
             console.log('Insert a number');
-            return sum;
+            return;
         }
-
-
     }
+    return;
 
 }
-sum(1)(2)(10)(-55)(90)();
-sum(1)(2);
-sum(1)(2)();
+
+sum(1)(0)(2)(3)();
+sum(0)(2)(3)();
