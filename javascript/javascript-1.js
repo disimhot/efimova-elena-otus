@@ -7,13 +7,12 @@ sum(1)(2)(3)....(n)() === 1 + 2 + 3 + ... + n
 
 function sum(value){
 
-    try {
         if (parseInt(value) || value === 0) {
             var array = [];
             array.push(value);
             return f;
         } else {
-            throw new Error();
+            throw new Error('Invalid argument, number expected');
         }
 
         function f(nextValue) {
@@ -29,17 +28,13 @@ function sum(value){
                 var res = array.reduce(reducer);
 
                 console.log(res);
-                return f;
 
             } else {
-                throw new Error();
+                throw new Error('Invalid argument, number expected');
             }
         }
-    } catch(e){
-        console.log('Insert a number');
-    }
 
 }
 
-sum('qert')(0)(2)(3)();
-//sum(0)(2)(3)();
+sum(0)(2)(3)();
+sum('sdfg')(2)(3)();
