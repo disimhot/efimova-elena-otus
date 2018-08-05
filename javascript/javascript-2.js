@@ -29,9 +29,8 @@ function promiseReduce(asyncFunctions, reduce, initialValue) {
                                  accum = accum.reduce(function (a, b) {
                                     return a * b;
                                 });
-                                console.log(accum);
                                 reduce(accum, initialValue);
-                                return accum;
+                                //return accum;
                             }
                         })
                 }
@@ -44,10 +43,10 @@ function promiseReduce(asyncFunctions, reduce, initialValue) {
 
 promiseReduce([fn1, fn2],function (memo, value) {
         console.log('reduce');
-        //return res = memo * value;
         res = memo * value;
+        console.log(res);
     },
-    1
+    2
 )
     .then(console.log);
 
