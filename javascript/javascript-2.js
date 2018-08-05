@@ -22,7 +22,7 @@ function promiseReduce(asyncFunctions, reduce, initialValue) {
         var numberOfPromises = asyncFunctions.length;
 
             asyncFunctions.forEach((promise, index) => {
-                    promise.then((result) => {
+                    promise().then((result) => {
                             accum[index] = result;
                             numberOfPromises--;
                             if (numberOfPromises === 0) {
@@ -34,7 +34,6 @@ function promiseReduce(asyncFunctions, reduce, initialValue) {
                                 return accum;
                             }
                         })
-                        .catch(console.log('Ошибка' + error.message));
                 }
             )
         }
