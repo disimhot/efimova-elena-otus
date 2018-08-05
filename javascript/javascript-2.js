@@ -20,7 +20,7 @@ function promiseReduce(asyncFunctions, reduce, initialValue) {
     return new Promise( resolve => {
         var accum = new Array(asyncFunctions.length);
         var numberOfPromises = asyncFunctions.length;
-
+            
             asyncFunctions.forEach((promise, index) => {
                     promise.then((result) => {
                             accum[index] = result;
