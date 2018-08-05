@@ -18,7 +18,7 @@ var fn2 = () => new Promise(resolve => {
 function promiseReduce(asyncFunctions, reduce, initialValue) {
 
     return new Promise( resolve => {
-        var accum = new Array(asyncFunctions.length);
+        var accum = [];
         var numberOfPromises = asyncFunctions.length;
 
             asyncFunctions.forEach((promise, index) => {
