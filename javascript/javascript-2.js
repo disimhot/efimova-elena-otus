@@ -21,23 +21,20 @@ function promiseReduce(asyncFunctions, reduce, initialValue) {
         var accum = [];
         var numberOfPromises = asyncFunctions.length;
 
-            asyncFunctions.forEach((promise, index) => {
-                    promise().then((result) => {
-                            accum[index] = result;
-                            numberOfPromises--;
-                            if (numberOfPromises === 0) {
-                                 var arrayRes = accum.reduce(function (a, b) {
-                                    return a * b;
-                                });
-                                reduce(arrayRes, initialValue);
-                                //return accum;
-                            }
-                        })
+        asyncFunctions.forEach((promise, index) => {
+            promise().then((result) => {
+                accum[index] = result;
+                numberOfPromises--;
+                if (numberOfPromises === 0) {
+                    reduce(accum, initialValue)
+                    resolve();
                 }
-            )
-        }
-    )
+
+            })
+        })
+    })
 }
+
 
 
 
