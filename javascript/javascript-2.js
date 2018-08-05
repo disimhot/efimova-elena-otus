@@ -26,10 +26,10 @@ function promiseReduce(asyncFunctions, reduce, initialValue) {
                             accum[index] = result;
                             numberOfPromises--;
                             if (numberOfPromises === 0) {
-                                 accum = accum.reduce(function (a, b) {
+                                 var arrayRes = accum.reduce(function (a, b) {
                                     return a * b;
                                 });
-                                reduce(accum, initialValue);
+                                reduce(arrayRes, initialValue);
                                 //return accum;
                             }
                         })
