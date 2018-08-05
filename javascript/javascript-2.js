@@ -18,18 +18,20 @@ var fn2 = () => new Promise(resolve => {
 function promiseReduce(asyncFunctions, reduce, initialValue) {
 
     return new Promise( resolve => {
-        var accum = [];
         var numberOfPromises = asyncFunctions.length;
+        var accum;
 
-        asyncFunctions.forEach((promise, index) => {
+        asyncFunctions.forEach((promise) => {
             promise().then((result) => {
-                accum[index] = result;
-                numberOfPromises--;
-                if (numberOfPromises === 0) {
-                    reduce(accum, initialValue)
-                    resolve();
+                if(accum === undefined){
+                    reduce(result, initialValue);
+                    accum = result*initialValue;
+                }else {
+                    reduce(accum, result)
+                    accum = accum*result;
                 }
 
+                resolve();
             })
         })
     })
