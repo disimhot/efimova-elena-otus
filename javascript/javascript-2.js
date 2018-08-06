@@ -16,28 +16,26 @@ var fn2 = () => new Promise(resolve => {
 })
 
 function promiseReduce(asyncFunctions, reduce, initialValue) {
-    var arr = [];
     var accum = initialValue;
-    return new Promise( resolve => {
+    var promise = Promise.resolve();
 
-        asyncFunctions.map(
-            (promise, index) => promise().then(function(result) {
-                reduce(result, accum);
-                accum=accum*result;
+    asyncFunctions.forEach(function (func) {
+        promise = promise
+            .then(()=> func())
+            .then((result)=>{
+                return reduce(result, accum);
             })
-        )
-        resolve('?');
     })
+            return promise;
 }
-
 
 
 
 promiseReduce([fn1, fn2],function (memo, value) {
         console.log('reduce');
-        console.log( memo * value);
+        return( memo * value);
     },
-    2
+    3
 )
     .then(console.log);
 
