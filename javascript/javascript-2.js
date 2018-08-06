@@ -19,7 +19,6 @@ function promiseReduce(asyncFunctions, reduce, initialValue) {
 
     return new Promise( resolve => {
         var accum;
-
         asyncFunctions.reduce(
             (promise, index) => promise().then(function(result) {
                 if(accum === undefined){
