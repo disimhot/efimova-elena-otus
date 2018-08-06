@@ -34,8 +34,7 @@ function promiseReduce(asyncFunctions, reduce, initialValue) {
 
 promiseReduce([fn1, fn2],function (memo, value) {
         console.log('reduce');
-        memo * value;
-        console.log(memo * value);
+        return memo * value;
     },
     2
 )
