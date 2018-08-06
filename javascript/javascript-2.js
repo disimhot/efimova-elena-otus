@@ -16,18 +16,13 @@ var fn2 = () => new Promise(resolve => {
 })
 
 function promiseReduce(asyncFunctions, reduce, initialValue) {
-
+    var arr = [];
     return new Promise( resolve => {
-        var accum;
-        asyncFunctions.reduce(
+        var accum = initialValue;
+
+        asyncFunctions.map(
             (promise, index) => promise().then(function(result) {
-                if(accum === undefined){
-                    reduce(result, initialValue);
-                    accum = result*initialValue;
-                }else {
-                    reduce(accum, result)
-                    accum = accum*result;
-                }
+                reduce(result, accum);
             })
         )
         resolve();
