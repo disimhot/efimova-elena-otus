@@ -25,7 +25,7 @@ function promiseReduce(asyncFunctions, reduce, initialValue) {
                 reduce(result, accum);
             })
         )
-        resolve();
+        resolve('Success');
     })
 }
 
