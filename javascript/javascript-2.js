@@ -12,20 +12,21 @@ var fn1 = () => {
 
 var fn2 = () => new Promise(resolve => {
     console.log('fn2');
-    setTimeout(() => resolve(2), 1000);
+    setTimeout(() => resolve(3), 1000);
 })
 
 function promiseReduce(asyncFunctions, reduce, initialValue) {
-    var accum = initialValue;
+    var array = [];
+    var accum;
     var promise = Promise.resolve();
 
     asyncFunctions.forEach(function (func) {
         promise = promise
             .then(()=> func())
             .then((result)=>{
-                var fin = reduce(result, accum);
-                accum=result*accum;
-                return fin;
+                array.push(result);
+                return array.reduce( (accum, currentValue) => accum * currentValue,
+                    initialValue)
             })
 
     })
@@ -36,9 +37,9 @@ function promiseReduce(asyncFunctions, reduce, initialValue) {
 
 promiseReduce([fn1, fn2],function (memo, value) {
         console.log('reduce');
-        return( memo * value);
+        return (memo * value);
     },
-    3
+    4
 )
     .then(console.log);
 
