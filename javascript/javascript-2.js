@@ -17,18 +17,16 @@ var fn2 = () => new Promise(resolve => {
 
 function promiseReduce(asyncFunctions, reduce, initialValue) {
     var array = [];
-    var accum;
     var promise = Promise.resolve();
+    var accum =initialValue;
 
     asyncFunctions.forEach(function (func) {
         promise = promise
             .then(()=> func())
             .then((result)=>{
-                array.push(result);
-                return array.reduce( (accum, currentValue) => accum * currentValue,
-                    initialValue)
+                accum = reduce(result, accum);
+                return accum;
             })
-
     })
             return promise;
 }
