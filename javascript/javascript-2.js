@@ -6,7 +6,7 @@
 
 var fn1 = () => {
     console.log('fn1');
-    return Promise.resolve(1);
+    return Promise.resolve(2);
 }
 
 
@@ -23,8 +23,11 @@ function promiseReduce(asyncFunctions, reduce, initialValue) {
         promise = promise
             .then(()=> func())
             .then((result)=>{
-                return reduce(result, accum);
+                var fin = reduce(result, accum);
+                accum=result*accum;
+                return fin;
             })
+
     })
             return promise;
 }
