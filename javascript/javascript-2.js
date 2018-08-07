@@ -6,7 +6,7 @@
 
 var fn1 = () => {
     console.log('fn1');
-    return Promise.resolve(1);
+    return Promise.resolve(2);
 }
 
 
@@ -16,34 +16,29 @@ var fn2 = () => new Promise(resolve => {
 })
 
 function promiseReduce(asyncFunctions, reduce, initialValue) {
+    var accum = initialValue;
+    var promise = Promise.resolve();
 
-    return new Promise( resolve => {
-        var accum;
-
-        asyncFunctions.reduce(
-            (promise, index) => promise().then(function(result) {
-                if(accum === undefined){
-                    reduce(result, initialValue);
-                    accum = result*initialValue;
-                }else {
-                    reduce(accum, result)
-                    accum = accum*result;
-                }
+    asyncFunctions.forEach(function (func) {
+        promise = promise
+            .then(()=> func())
+            .then((result)=>{
+                var fin = reduce(result, accum);
+                accum=result*accum;
+                return fin;
             })
-        )
-        resolve();
-    })
-}
 
+    })
+            return promise;
+}
 
 
 
 promiseReduce([fn1, fn2],function (memo, value) {
         console.log('reduce');
-        memo * value;
-        console.log(memo * value);
+        return( memo * value);
     },
-    2
+    3
 )
     .then(console.log);
 
