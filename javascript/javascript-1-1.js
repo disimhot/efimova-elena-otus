@@ -10,7 +10,7 @@ sum(1)(2)(3)....(n)() === 1 + 2 + 3 + ... + n
 function sum(value) {
     let res = value;
     function f(nextValue) {
-        if (parseInt(nextValue)) {
+        if (typeof(nextValue) === 'number') {
             res += nextValue;
             return f;
         } else if (nextValue === undefined) {
@@ -24,3 +24,4 @@ function sum(value) {
 }
 console.log(sum(1)(2)(10)(-55)(90)());
 console.log(sum(5)(2)());
+console.log(sum(1)(2)(10)(0)());
