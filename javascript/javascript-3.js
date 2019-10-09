@@ -11,15 +11,28 @@ getPath($0) // => "..."
 */
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const html = `<!DOCTYPE html><p id="unique">Hello world</p>`;
+const html =
+    `<!DOCTYPE html><div class="test">
+            <div id="unique">
+                <a href="#"></a>
+            </div>
+            <div>
+                <a href="#"></a>
+                <a href="#"></a>
+            </div>
+            </div>`;
 global.document = new JSDOM(html).window.document;
 
 let searchedElem = document.getElementById('unique')
 function getPath(element) {
+    let searchedSelector = '';
     let tagName = element.tagName;
     console.log('tagName', tagName);
 
-
+    if (element.id) {
+        searchedSelector = '#' + element.id;
+        return searchedSelector
+    }
     // Иерархия
     //     element.parentElement.parentElement //до html
     // Уникальные атрибуты
@@ -37,4 +50,4 @@ function getPath(element) {
 
 }
 
-getPath(searchedElem);
+console.log(getPath(searchedElem));
