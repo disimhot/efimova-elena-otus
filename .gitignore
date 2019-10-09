@@ -3,3 +3,4 @@ javascript/.idea/javascript.iml
 javascript/test.js
 *.iml
 test.js
+node_modules

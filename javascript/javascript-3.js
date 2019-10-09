@@ -9,9 +9,16 @@ $0 // HTMLElement
 getPath($0) // => "..."
 ```
 */
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+const html = `<!DOCTYPE html><p id="unique">Hello world</p>`;
+global.document = new JSDOM(html).window.document;
 
+let searchedElem = document.getElementById('unique')
 function getPath(element) {
-    let tagName = element.tagName
+    let tagName = element.tagName;
+    console.log('tagName', tagName);
+
 
     // Иерархия
     //     element.parentElement.parentElement //до html
@@ -29,3 +36,5 @@ function getPath(element) {
     //     3. Merge the resulting stack into a single CSS selector
 
 }
+
+getPath(searchedElem);

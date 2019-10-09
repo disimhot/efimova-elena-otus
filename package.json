@@ -1,0 +1,8 @@
+{
+    "name": "otus-proj",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "jsdom": "15.1.1"
+    }
+}
