@@ -14,53 +14,69 @@ const { JSDOM } = jsdom;
 const html =
     `<!DOCTYPE html>
         <div class="bar foo">
-        <div id="unique">
-            <a href="#" class="href"></a>
-        </div>
-        <div>
-            <a href="#" class="href"></a>
-            <a href="#" class="href" id="test"></a>
-        </div>
+            <div id="unique" class="one">
+                <a href="asdf" class="href"></a>
+            </div>
+            <div class="one">
+                <a href="adsf"></a>
+                <a href="adsf" id="test"></a>
+            </div>
         </div>`;
+
+const anotherHTML = 
+                    `
+                    <body>
+                        <section class="dsf">
+                            <p id="unique">Little</p>
+                            <p>Piggy</p>   
+                        </section>
+                        <section class="dsf">
+                            <p id="unique">Little</p>
+                            <p>Piggy</p>   
+                        </section>
+                    </body>
+                    `;
 global.document = new JSDOM(html).window.document;
 
-let searchedElem = document.querySelector('#test')
-function getPath(element) {
-    let searchedSelector = element.tagName;
+let searchedElem = document.querySelector('#test');
+function getPath(element, selector) {
+    let searchedSelector = element.tagName,
+        fullPath = getFullPath(searchedSelector, selector);
 
-    console.log('searchedSelector', searchedSelector);
+    checkPath(fullPath) ? getAllAttributes(element) : getResult(fullPath);
 
-    // if (element.id) {
-    //     searchedSelector += '#' + element.id;
-    //     return searchedSelector;
-    // } else 
-    if(element.className) {
-        let classElement = '.' + element.className.replace(/ /g,'.');
-        searchedSelector += classElement;
-        if (checkPath(searchedSelector)){
-            console.log('to be continued');
-            let index = [...searchedElem.parentNode.children].indexOf(searchedElem);
-            console.log('index', index);
-        } else return searchedSelector
+    function getAllAttributes(element) {
+        let attribute_nodes = element.attributes,
+        attributes = Array.prototype.slice.call(attribute_nodes,0);
+            attributes.forEach(item => {
+                if(item.name === 'class') {
+                    searchedSelector += '.' + item.value.replace(/ /g,'.');
+                } else if(item.name !== 'id'){
+                    searchedSelector +=`[${item.name}=${item.value}]`;
+                }
+            })
+        fullPath = getFullPath(searchedSelector, selector);
+        checkPath(fullPath) ? getParent(element) : getResult(fullPath);
     }
-    // Иерархия
-    //     element.parentElement.parentElement //до html
-    // Уникальные атрибуты
-    //     element.id
-    //     element.classList
-    //     element.attributes
+    function getParent(element) {
+        let index = [...element.parentNode.children].indexOf(element);
+        searchedSelector = `${searchedSelector}:nth-child(${index + 1})`; 
+        fullPath = getFullPath(searchedSelector, selector);
 
-    //     HIERARCHY = A stack of the element’s hierarchy, climbing up the DOM tree
-    //     For each element in the HIERARCHY analyse the following in sequence:
-    //     2.1 Check for an ID
-    //     2.2 Check for unique Attributes
-    //     2.3 Check Tags
-    //     2.4 Check sibling relations
-    //     3. Merge the resulting stack into a single CSS selector
+        checkPath(fullPath) ? getPath(element.parentElement, searchedSelector) : getResult(fullPath);
+    }
+
+    function getFullPath(searchedElement, previousSelector) {
+        return previousSelector ? (`${searchedElement} > ${previousSelector}`) : searchedElement;
+    }
+
+    function getResult(path) {
+        console.log('path', path);
+        return path;
+    }
     function checkPath(path) {
         return document.querySelectorAll(path).length > 1;
     }
-
 }
 
-console.log(getPath(searchedElem));
+console.log('result', getPath(searchedElem))
