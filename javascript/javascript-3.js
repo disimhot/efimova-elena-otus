@@ -51,7 +51,7 @@ function getPath(element, selector) {
             attributes.forEach(item => {
                 if(item.name === 'class') {
                     searchedSelector += '.' + item.value.replace(/ /g,'.');
-                } else if(item.name !== 'id'){
+                } else {
                     searchedSelector +=`[${item.name}=${item.value}]`;
                 }
             })
