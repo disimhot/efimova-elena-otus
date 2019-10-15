@@ -14,12 +14,15 @@ const { JSDOM } = jsdom;
 const html =
     `<!DOCTYPE html>
         <div class="bar foo">
-            <div id="unique" class="one">
+            <div class="one">
                 <a href="asdf" class="href"></a>
             </div>
             <div class="one">
-                <a href="adsf"></a>
-                <a href="adsf" id="test"></a>
+                <div class="one"></div>
+                <div class="one">
+                    <div></div>
+                    <div></div>
+                </div>
             </div>
         </div>`;
 
@@ -38,7 +41,7 @@ const anotherHTML =
                     `;
 global.document = new JSDOM(html).window.document;
 
-let searchedElem = document.querySelector('#test');
+let searchedElem = document.querySelector('DIV.one > DIV.one:nth-child(2) > DIV:nth-child(2)');
 function getPath(element, selector) {
     let searchedSelector = element.tagName,
         fullPath = getFullPath(searchedSelector, selector);
@@ -63,7 +66,7 @@ function getPath(element, selector) {
         searchedSelector = `${searchedSelector}:nth-child(${index + 1})`; 
         fullPath = getFullPath(searchedSelector, selector);
 
-        checkPath(fullPath) ? getPath(element.parentElement, searchedSelector) : getResult(fullPath);
+        checkPath(fullPath) ? getPath(element.parentElement, fullPath) : getResult(fullPath);
     }
 
     function getFullPath(searchedElement, previousSelector) {
@@ -79,4 +82,4 @@ function getPath(element, selector) {
     }
 }
 
-console.log('result', getPath(searchedElem))
+getPath(searchedElem);
