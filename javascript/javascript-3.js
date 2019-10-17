@@ -49,7 +49,7 @@ function getPath(element, selector) {
     let searchedSelector = element.tagName,
         fullPath = getFullPath(searchedSelector, selector);
 
-    checkPath(fullPath) ? getAllAttributes(element) : getResult(fullPath);
+    return checkPath(fullPath) ? getAllAttributes(element) : getResult(fullPath);
 
     function getAllAttributes(element) {
         let attribute_nodes = element.attributes,
@@ -59,14 +59,13 @@ function getPath(element, selector) {
                 let class_selector = item.value.split(' ').filter(item => {
                     return item.length !== 0
                 }).join('.');
-                console.log('class_selector', class_selector);
                  searchedSelector += '.' + class_selector;
             } else {
                 searchedSelector += `[${item.name}=${item.value}]`;
             }
         })
         fullPath = getFullPath(searchedSelector, selector);
-        checkPath(fullPath) ? getParent(element) : getResult(fullPath);
+        return checkPath(fullPath) ? getParent(element) : getResult(fullPath);
     }
 
     function getParent(element) {
@@ -74,7 +73,7 @@ function getPath(element, selector) {
         searchedSelector = `${searchedSelector}:nth-child(${index + 1})`;
         fullPath = getFullPath(searchedSelector, selector);
 
-        checkPath(fullPath) ? getPath(element.parentElement, fullPath) : getResult(fullPath);
+        return checkPath(fullPath) ? getPath(element.parentElement, fullPath) : getResult(fullPath);
     }
 
     function getFullPath(searchedElement, previousSelector) {
@@ -82,7 +81,6 @@ function getPath(element, selector) {
     }
 
     function getResult(path) {
-        console.log('path', path);
         return path;
     }
 
@@ -91,4 +89,4 @@ function getPath(element, selector) {
     }
 }
 
-getPath(searchedElem);
+console.log(getPath(searchedElem))
