@@ -10,7 +10,9 @@ getPath($0) // => "..."
 ```
 */
 const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+const {
+    JSDOM
+} = jsdom;
 const html =
     `<!DOCTYPE html>
         <div class="bar foo">
@@ -20,14 +22,14 @@ const html =
             <div class="one">
                 <div class="one"></div>
                 <div class="one">
-                    <div></div>
-                    <div></div>
+                    <div class="   one one-two     three   "></div>
+                    <div class="   one one-two "></div>
                 </div>
             </div>
         </div>`;
 
-const anotherHTML = 
-                    `
+const anotherHTML =
+    `
                     <body>
                         <section class="dsf">
                             <p id="unique">Little</p>
@@ -41,7 +43,8 @@ const anotherHTML =
                     `;
 global.document = new JSDOM(html).window.document;
 
-let searchedElem = document.querySelector('DIV.one > DIV.one:nth-child(2) > DIV:nth-child(2)');
+let searchedElem = document.querySelector('DIV.one > DIV.one:nth-child(2) > DIV:nth-child(1)');
+
 function getPath(element, selector) {
     let searchedSelector = element.tagName,
         fullPath = getFullPath(searchedSelector, selector);
@@ -50,20 +53,25 @@ function getPath(element, selector) {
 
     function getAllAttributes(element) {
         let attribute_nodes = element.attributes,
-        attributes = Array.prototype.slice.call(attribute_nodes,0);
-            attributes.forEach(item => {
-                if(item.name === 'class') {
-                    searchedSelector += '.' + item.value.replace(/ /g,'.');
-                } else {
-                    searchedSelector +=`[${item.name}=${item.value}]`;
-                }
-            })
+            attributes = Array.prototype.slice.call(attribute_nodes, 0);
+        attributes.forEach(item => {
+            if (item.name === 'class') {
+                let class_selector = item.value.split(' ').filter(item => {
+                    return item.length !== 0
+                }).join('.');
+                console.log('class_selector', class_selector);
+                 searchedSelector += '.' + class_selector;
+            } else {
+                searchedSelector += `[${item.name}=${item.value}]`;
+            }
+        })
         fullPath = getFullPath(searchedSelector, selector);
         checkPath(fullPath) ? getParent(element) : getResult(fullPath);
     }
+
     function getParent(element) {
         let index = [...element.parentNode.children].indexOf(element);
-        searchedSelector = `${searchedSelector}:nth-child(${index + 1})`; 
+        searchedSelector = `${searchedSelector}:nth-child(${index + 1})`;
         fullPath = getFullPath(searchedSelector, selector);
 
         checkPath(fullPath) ? getPath(element.parentElement, fullPath) : getResult(fullPath);
@@ -77,6 +85,7 @@ function getPath(element, selector) {
         console.log('path', path);
         return path;
     }
+
     function checkPath(path) {
         return document.querySelectorAll(path).length > 1;
     }
